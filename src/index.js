@@ -32,17 +32,19 @@ const askForQuestions = [
   }
 ]
 
-const createQuiz = title =>
+const createQuiz = title =>{
   prompt(askForQuestions)
     .then(answer =>
-      // TODO
-      console.log(answer)
+      createPrompt({
+        numQuestions: Number.parseInt(answer.numQuestions),
+        numChoices: Number.parseInt(answer.numChoices)
+      })
     )
+    .then(promptArray => prompt(promptArray))
+    .then(answer => createQuestions(answer))
+    .then(questions => writeFile(title + '.json', JSON.stringify(questions)))
     .catch(err => console.log('Error creating the quiz.', err))
-
-// const takeQuiz = (title, output) => TODO
-
-// const takeRandomQuiz = (quizzes, output, n) => TODO
+    }
 
 cli
   .command(
